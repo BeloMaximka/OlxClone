@@ -11,7 +11,13 @@
 		"proseWrap": "preserve",
 		"include": ["src/"]
 	},
+  "compilerOptions": {
+    "types": [
+      "https://unpkg.com/@types/jsonwebtoken@^9.0.7/index.d.ts"
+    ]
+  },
 	"imports": {
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
 		"@oak/oak": "jsr:@oak/oak@^17.1.2",
 		"@std/assert": "jsr:@std/assert@1",
 		"@std/dotenv": "jsr:@std/dotenv@^0.225.2",

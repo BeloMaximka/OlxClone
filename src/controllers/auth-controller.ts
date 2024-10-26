@@ -1,6 +1,5 @@
 import type { Context } from "@oak/oak/context";
-import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
-// @ts-types="npm:@types/jsonwebtoken"
+import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 interface AuthRequest {
