@@ -28,7 +28,9 @@ export class AuthController {
     const body = (await ctx.request.body.json()) as AuthRequest;
     if (!body.email || !body.password) {
       ctx.response.status = 400;
-      ctx.response.body = { error: "Email and password are required" };
+      ctx.response.body = {
+        error: "Email and password are required",
+      };
       return;
     }
 
@@ -51,7 +53,9 @@ export class AuthController {
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
       ctx.response.status = 403;
-      ctx.response.body = { error: "Authorization header required" };
+      ctx.response.body = {
+        error: "Authorization header required",
+      };
       return;
     }
 
@@ -62,7 +66,9 @@ export class AuthController {
     const refreshToken = await ctx.cookies.get("refresh_token");
     if (!refreshToken) {
       ctx.response.status = 401;
-      ctx.response.body = { error: "Refresh token is required" };
+      ctx.response.body = {
+        error: "Refresh token is required",
+      };
       return;
     }
     jwt.verify(refreshToken, environmentVariables.jwt.refreshSecret);

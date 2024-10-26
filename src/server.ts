@@ -1,7 +1,7 @@
 import { Application } from "@oak/oak/application";
 import { Router } from "@oak/oak/router";
+import { environmentVariables } from "./config/environment-variables.ts";
 import { authRouter } from "./routers/auth-router.ts";
-import { environmentVariables } from './config/environment-variables.ts';
 
 const cert = await Deno.readTextFile("./cert/cert.pem");
 const key = await Deno.readTextFile("./cert/key.pem");
@@ -24,4 +24,10 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 console.log(`Server is listening at port ${environmentVariables.port}`);
-app.listen({ port: environmentVariables.port, cert, key, keyFormat: "pem", secure: true });
+app.listen({
+  port: environmentVariables.port,
+  cert,
+  key,
+  keyFormat: "pem",
+  secure: true,
+});
