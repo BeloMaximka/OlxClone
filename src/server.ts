@@ -1,7 +1,14 @@
-import { Application } from "jsr:@oak/oak/application";
-import { Router } from "jsr:@oak/oak/router";
+import { Application } from "@oak/oak/application";
+import { Router } from "@oak/oak/router";
+import "@std/dotenv/load";
+import { authRouter } from "./routers/auth-router.ts";
+
+const PORT = Number(Deno.env.get("PORT"));
+const cert = await Deno.readTextFile("./cert/cert.pem");
+const key = await Deno.readTextFile("./cert/key.pem");
 
 const router = new Router();
+router.use(["/api/auth"], authRouter.routes());
 router.get("/", (ctx) => {
   ctx.response.body = `<!DOCTYPE html>
     <html>
@@ -17,4 +24,5 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen({ port: 8080 });
+console.log(`Server is listening at port ${PORT}`);
+app.listen({ port: PORT, cert, key, keyFormat: "pem", secure: true });
