@@ -1,15 +1,18 @@
 import type { Context } from "@oak/oak/context";
 import * as bcrypt from "bcrypt";
+// @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
 import jwt from "jsonwebtoken";
+import { environmentVariables } from "../config/environment-variables.ts";
 
 interface AuthRequest {
   email: string;
   password: string;
 }
-const jwtAccessSecret = Deno.env.get("JWT_ACCESS_SECRET");
-const jwtRefreshSecret = Deno.env.get("JWT_REFRESH_SECRET");
-if (!jwtAccessSecret || !jwtRefreshSecret) {
-  throw Error("Missing JWT_ACCESS_SECRET or JWT_REFRESH_ECRET env variable");
+
+interface User {
+  id: number;
+  email: string;
+  password: string;
 }
 
 const users = [
@@ -39,19 +42,46 @@ export class AuthController {
       ctx.response.status = 401;
       return;
     }
-    ctx.response.body = body;
 
+    AuthController.sendRefreshAndAccessTokens(ctx, user);
+  }
+
+  static async getNewTokens(ctx: Context) {
+    const authHeader = ctx.request.headers.get("authorization");
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
+      ctx.response.status = 403;
+      ctx.response.body = { error: "Authorization header required" };
+      return;
+    }
+
+    const decoded = jwt.verify(
+      token,
+      environmentVariables.jwt.accessSecret
+    ) as User;
+    const refreshToken = await ctx.cookies.get("refresh_token");
+    if (!refreshToken) {
+      ctx.response.status = 401;
+      ctx.response.body = { error: "Refresh token is required" };
+      return;
+    }
+    jwt.verify(refreshToken, environmentVariables.jwt.refreshSecret);
+
+    AuthController.sendRefreshAndAccessTokens(ctx, decoded);
+  }
+
+  private static sendRefreshAndAccessTokens(ctx: Context, user: User) {
     const oneMonthExpiration =
       Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
     const refreshToken = jwt.sign(
       { email: user.email, exp: oneMonthExpiration },
-      jwtRefreshSecret
+      environmentVariables.jwt.refreshSecret
     );
 
     const oneHourExpiration = Math.floor(Date.now() / 1000) + 60 * 60;
     const accessToken = jwt.sign(
       { email: user.email, exp: oneHourExpiration },
-      jwtAccessSecret
+      environmentVariables.jwt.accessSecret
     );
 
     ctx.cookies.set("refresh_token", refreshToken, {
@@ -59,7 +89,7 @@ export class AuthController {
       sameSite: true,
       httpOnly: true,
       maxAge: oneMonthExpiration * 1000,
-      path: "/api/user/refresh-token",
+      path: "/api/auth/token",
     });
 
     ctx.response.body = { token: accessToken };
