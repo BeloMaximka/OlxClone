@@ -1,7 +1,9 @@
 import type { Context } from "@oak/oak/context";
 import type { Next } from "@oak/oak/middleware";
 import * as bcrypt from "bcrypt";
+import { Role } from "../../../db/entities/role.ts";
 import { User } from "../../../db/entities/user.ts";
+import { UserPayload } from "../models/user-payload.ts";
 
 interface AuthRequest {
   email: string;
@@ -21,6 +23,7 @@ export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
     where: {
       email: body.email,
     },
+    include: [Role],
   });
 
   if (!user) {
@@ -28,11 +31,13 @@ export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
     return;
   }
 
+  console.log(user.roles.map((role) => role.name));
+
   if (!bcrypt.compare(body.password, user.password)) {
     ctx.response.status = 401;
     return;
   }
 
-  ctx.state["user"] = user;
+  ctx.state["user"] = new UserPayload(user);
   next();
 }

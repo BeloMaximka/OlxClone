@@ -1,4 +1,12 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from "sequelize-typescript";
+import { Role } from "./role.ts";
+import { UserRole } from "./user-role.ts";
 
 @Table({
   timestamps: false,
@@ -7,40 +15,43 @@ export class User extends Model {
   @Column({
     type: DataType.STRING,
   })
-  name!: string;
+  declare name: string;
 
   @Column({
     type: DataType.STRING,
     unique: true,
   })
-  email!: string;
+  declare email: string;
 
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
   })
-  isEmailConfirmed!: boolean;
+  declare isEmailConfirmed: boolean;
 
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: true,
   })
-  isActive!: boolean;
+  declare isActive: boolean;
 
   @Column({
     type: DataType.STRING(1024),
     allowNull: true,
   })
-  avatarUrl!: string;
+  declare avatarUrl: string;
 
   @Column({
     type: DataType.DATE,
     defaultValue: new Date(),
   })
-  registrationDate!: Date;
+  declare registrationDate: Date;
 
   @Column({
     type: DataType.STRING,
   })
-  password!: string;
+  declare password: string;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  declare roles: Role[];
 }

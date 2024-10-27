@@ -13,7 +13,12 @@ export function sendTokens(ctx: Context) {
 
   const oneHourExpiration = Math.floor(Date.now() / 1000) + 60 * 60;
   const accessToken = jwt.sign(
-    { email: user.email, exp: oneHourExpiration },
+    {
+      email: user.email,
+      sub: user.sub,
+      roles: user.roles,
+      exp: oneHourExpiration,
+    },
     environmentVariables.jwt.accessSecret
   );
 
