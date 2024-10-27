@@ -3,7 +3,6 @@
     "dev": "deno run --watch -A ./src/server.ts"
   },
   "compilerOptions": {
-    "types": ["https://unpkg.com/@types/jsonwebtoken@^9.0.7/index.d.ts"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

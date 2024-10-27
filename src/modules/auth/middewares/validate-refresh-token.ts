@@ -1,6 +1,5 @@
 import type { Context } from "@oak/oak/context";
 import type { Next } from "@oak/oak/middleware";
-// @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
 import jwt from "jsonwebtoken";
 import { environmentVariables } from "../../../config/environment-variables.ts";
 

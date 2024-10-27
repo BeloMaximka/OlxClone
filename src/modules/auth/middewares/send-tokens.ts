@@ -1,8 +1,7 @@
 import type { Context } from "@oak/oak/context";
+import jwt from "jsonwebtoken";
 import { environmentVariables } from "../../../config/environment-variables.ts";
 import type { UserPayload } from "../models/user-payload.ts";
-// @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
-import jwt from "jsonwebtoken";
 
 export function sendTokens(ctx: Context) {
   const user = ctx.state["user"] as UserPayload;

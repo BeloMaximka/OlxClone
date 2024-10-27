@@ -1,9 +1,8 @@
 import type { Context } from "@oak/oak/context";
 import type { Next } from "@oak/oak/middleware";
+import jwt from "jsonwebtoken";
 import { environmentVariables } from "../../../config/environment-variables.ts";
 import type { UserPayload } from "../models/user-payload.ts";
-// @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
-import jwt from "jsonwebtoken";
 
 export function retrieveUserFromAccessToken(ctx: Context, next: Next) {
   const authHeader = ctx.request.headers.get("authorization");
