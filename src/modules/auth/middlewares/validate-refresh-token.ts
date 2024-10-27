@@ -17,9 +17,6 @@ export async function validateRefreshToken(ctx: Context, next: Next) {
     jwt.verify(refreshToken, environmentVariables.jwt.refreshSecret);
     next();
   } catch {
-    ctx.response.status = 403;
-    ctx.response.body = {
-      error: "Invalid refresh token",
-    };
+    ctx.assert(false, 403, "Invalid refresh token");
   }
 }

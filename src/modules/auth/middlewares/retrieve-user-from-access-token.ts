@@ -23,9 +23,6 @@ export function retrieveUserFromAccessToken(ctx: Context, next: Next) {
     ctx.state["user"] = decodedUser;
     next();
   } catch {
-    ctx.response.status = 403;
-    ctx.response.body = {
-      error: "Invalid access token",
-    };
+    ctx.assert(false, 403, "Invalid access token");
   }
 }

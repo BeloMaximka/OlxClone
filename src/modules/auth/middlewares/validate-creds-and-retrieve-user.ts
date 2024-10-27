@@ -12,13 +12,9 @@ interface AuthRequest {
 
 export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
   const body = (await ctx.request.body.json()) as AuthRequest;
-  if (!body.email || !body.password) {
-    ctx.response.status = 400;
-    ctx.response.body = {
-      error: "Email and password are required",
-    };
-    return;
-  }
+  ctx.assert(body.email, 400, "Email is required");
+  ctx.assert(body.password, 400, "Password is required");
+
   const user = await User.findOne({
     where: {
       email: body.email,
@@ -26,17 +22,8 @@ export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
     include: [Role],
   });
 
-  if (!user) {
-    ctx.response.status = 401;
-    return;
-  }
-
-  console.log(user.roles.map((role) => role.name));
-
-  if (!bcrypt.compare(body.password, user.password)) {
-    ctx.response.status = 401;
-    return;
-  }
+  ctx.assert(user, 401);
+  ctx.assert(await bcrypt.compare(body.password, user.password), 401);
 
   ctx.state["user"] = new UserPayload(user);
   next();
