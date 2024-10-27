@@ -1,7 +1,7 @@
 import type { Context } from "@oak/oak/context";
 import type { Next } from "@oak/oak/middleware";
 import { environmentVariables } from "../../../config/environment-variables.ts";
-import type { User } from "../models/user.ts";
+import type { UserPayload } from "../models/user-payload.ts";
 // @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
 import jwt from "jsonwebtoken";
 
@@ -19,7 +19,7 @@ export function retrieveUserFromAccessToken(ctx: Context, next: Next) {
   const decodedUser = jwt.verify(
     accessToken,
     environmentVariables.jwt.accessSecret
-  ) as User;
+  ) as UserPayload;
 
   ctx.state["user"] = decodedUser;
   next();

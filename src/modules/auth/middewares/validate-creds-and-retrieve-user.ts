@@ -1,19 +1,12 @@
 import type { Context } from "@oak/oak/context";
 import type { Next } from "@oak/oak/middleware";
 import * as bcrypt from "bcrypt";
+import { User } from "../../../db/entities/user.ts";
 
 interface AuthRequest {
   email: string;
   password: string;
 }
-
-const users = [
-  {
-    id: 1,
-    email: "vasya@gmail.com",
-    password: "$2b$10$9EbkD9UElCDWPZ11PRLviuIUyQHBoo9GzAF4H8LqGSiu48zS/7PPi", // 1Password!
-  },
-];
 
 export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
   const body = (await ctx.request.body.json()) as AuthRequest;
@@ -24,8 +17,12 @@ export async function validateCredsAndRetrieveUsers(ctx: Context, next: Next) {
     };
     return;
   }
+  const user = await User.findOne({
+    where: {
+      email: body.email,
+    },
+  });
 
-  const user = users.find((user) => user.email === body.email);
   if (!user) {
     ctx.response.status = 401;
     return;

@@ -3,14 +3,20 @@
     "dev": "deno run --watch -A ./src/server.ts"
   },
   "compilerOptions": {
-    "types": ["https://unpkg.com/@types/jsonwebtoken@^9.0.7/index.d.ts"]
+    "types": ["https://unpkg.com/@types/jsonwebtoken@^9.0.7/index.d.ts"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
+  "nodeModulesDir": "auto",
   "imports": {
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "@oak/oak": "jsr:@oak/oak@^17.1.2",
     "@std/assert": "jsr:@std/assert@1",
     "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
     "@types/jsonwebtoken": "npm:@types/jsonwebtoken@^9.0.7",
-    "jsonwebtoken": "npm:jsonwebtoken@^9.0.2"
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "jsonwebtoken": "npm:jsonwebtoken@^9.0.2",
+    "mysql2": "npm:mysql2@^3.11.3",
+    "sequelize": "npm:sequelize@^6.37.5",
+    "sequelize-typescript": "npm:sequelize-typescript@^2.1.6"
   }
 }

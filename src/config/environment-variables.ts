@@ -1,6 +1,6 @@
 import "@std/dotenv/load";
 
-function getEnvVariableString(name: string) {
+function getString(name: string) {
   const value = Deno.env.get(name);
   if (!value) {
     throw Error(`Missing ${name} env variable`);
@@ -8,7 +8,7 @@ function getEnvVariableString(name: string) {
   return value;
 }
 
-function getEnvVariableNumber(name: string) {
+function getNumber(name: string) {
   const value = Number(Deno.env.get(name));
   if (isNaN(value)) {
     throw Error(`Missing ${name} env variable`);
@@ -18,8 +18,14 @@ function getEnvVariableNumber(name: string) {
 
 export const environmentVariables = {
   jwt: {
-    accessSecret: getEnvVariableString("JWT_ACCESS_SECRET"),
-    refreshSecret: getEnvVariableString("JWT_ACCESS_SECRET"),
+    accessSecret: getString("JWT_ACCESS_SECRET"),
+    refreshSecret: getString("JWT_ACCESS_SECRET"),
   },
-  port: getEnvVariableNumber("PORT"),
+  port: getNumber("PORT"),
+  mysql: {
+    hostname: getString("MYSQL_HOSTNAME"),
+    username: getString("MYSQL_USERNAME"),
+    password: getString("MYSQL_PASSWORD"),
+    database: getString("MYSQL_DATABASE"),
+  },
 };

@@ -1,11 +1,11 @@
 import type { Context } from "@oak/oak/context";
 import { environmentVariables } from "../../../config/environment-variables.ts";
-import type { User } from "../models/user.ts";
+import type { UserPayload } from "../models/user-payload.ts";
 // @ts-types="https://unpkg.com/@types/jsonwebtoken/index.d.ts"
 import jwt from "jsonwebtoken";
 
 export function sendTokens(ctx: Context) {
-  const user = ctx.state["user"] as User;
+  const user = ctx.state["user"] as UserPayload;
   const oneMonthExpiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
   const refreshToken = jwt.sign(
     { email: user.email, exp: oneMonthExpiration },
