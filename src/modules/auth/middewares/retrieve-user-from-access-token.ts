@@ -16,11 +16,17 @@ export function retrieveUserFromAccessToken(ctx: Context, next: Next) {
     return;
   }
 
-  const decodedUser = jwt.verify(
-    accessToken,
-    environmentVariables.jwt.accessSecret
-  ) as UserPayload;
-
-  ctx.state["user"] = decodedUser;
-  next();
+  try {
+    const decodedUser = jwt.verify(
+      accessToken,
+      environmentVariables.jwt.accessSecret
+    ) as UserPayload;
+    ctx.state["user"] = decodedUser;
+    next();
+  } catch {
+    ctx.response.status = 403;
+    ctx.response.body = {
+      error: "Invalid access token",
+    };
+  }
 }

@@ -13,6 +13,14 @@ export async function validateRefreshToken(ctx: Context, next: Next) {
     };
     return;
   }
-  jwt.verify(refreshToken, environmentVariables.jwt.refreshSecret);
-  next();
+
+  try {
+    jwt.verify(refreshToken, environmentVariables.jwt.refreshSecret);
+    next();
+  } catch {
+    ctx.response.status = 403;
+    ctx.response.body = {
+      error: "Invalid refresh token",
+    };
+  }
 }
