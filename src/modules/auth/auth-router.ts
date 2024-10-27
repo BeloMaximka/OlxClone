@@ -1,8 +1,8 @@
 import { Router } from "@oak/oak/router";
-import { retrieveUserFromAccessToken } from "./middewares/retrieve-user-from-access-token.ts";
-import { sendTokens } from "./middewares/send-tokens.ts";
-import { validateCredsAndRetrieveUsers } from "./middewares/validate-creds-and-retrieve-user.ts";
-import { validateRefreshToken } from "./middewares/validate-refresh-token.ts";
+import { retrieveUserFromAccessToken } from "./middlewares/retrieve-user-from-access-token.ts";
+import { sendTokens } from "./middlewares/send-tokens.ts";
+import { validateCredsAndRetrieveUsers } from "./middlewares/validate-creds-and-retrieve-user.ts";
+import { validateRefreshToken } from "./middlewares/validate-refresh-token.ts";
 
 const authRouter = new Router();
 
