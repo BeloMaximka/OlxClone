@@ -1,4 +1,4 @@
-import type { User } from "../../../db/entities/user.ts";
+import type { User } from "../../../../db/entities/user.ts";
 
 export class UserPayload {
   sub: number;

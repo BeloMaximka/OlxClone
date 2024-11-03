@@ -1,6 +1,6 @@
 import type { Context } from "@oak/oak/context";
 import jwt from "jsonwebtoken";
-import { environmentVariables } from "../../../config/environment-variables.ts";
+import { environmentVariables } from "../../../../config/environment-variables.ts";
 import type { UserPayload } from "../models/user-payload.ts";
 
 export function getUserFromAccessToken(ctx: Context) {

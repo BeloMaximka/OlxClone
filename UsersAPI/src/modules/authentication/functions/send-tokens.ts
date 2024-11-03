@@ -1,7 +1,7 @@
 import type { Context } from "@oak/oak/context";
 import jwt from "jsonwebtoken";
 import { environmentVariables } from "../../../config/environment-variables.ts";
-import type { UserPayload } from "../models/user-payload.ts";
+import type { UserPayload } from "../../shared/authentication/models/user-payload.ts";
 
 export function sendTokens(ctx: Context, user: UserPayload) {
   const oneMonthExpiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;

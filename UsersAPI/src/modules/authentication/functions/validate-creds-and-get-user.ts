@@ -2,7 +2,7 @@ import type { Context } from "@oak/oak/context";
 import * as bcrypt from "bcrypt";
 import { Role } from "../../../db/entities/role.ts";
 import { User } from "../../../db/entities/user.ts";
-import { UserPayload } from "../models/user-payload.ts";
+import { UserPayload } from "../../shared/authentication/models/user-payload.ts";
 import type { AuthRequest } from "../models/auth-request.ts";
 
 export async function validateCredsAndGetUser(ctx: Context, req: AuthRequest) {
