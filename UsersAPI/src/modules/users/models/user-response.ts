@@ -8,6 +8,7 @@ export class UserResponse {
   isActive: boolean;
   avatarUrl?: string;
   registrationDate: Date;
+  roles: string[];
 
   constructor(user: User) {
     this.id = user.id;
@@ -17,5 +18,6 @@ export class UserResponse {
     this.isActive = user.isActive;
     this.avatarUrl = user.avatarUrl;
     this.registrationDate = user.registrationDate;
+    this.roles = user.roles.map((role) => role.name);
   }
 }

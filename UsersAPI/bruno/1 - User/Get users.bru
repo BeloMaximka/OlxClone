@@ -29,6 +29,7 @@ tests {
       expect(jsonData[0].isActive).to.eql(true);
       expect(jsonData[0].avatarUrl).to.eql(null);
       expect(jsonData[0].registrationDate).to.exist;
+      expect(jsonData[0].roles[0]).to.eql("admin");
   
       expect(jsonData[1].id).to.exist
       bru.setEnvVar("newUserId", jsonData[1].id);
