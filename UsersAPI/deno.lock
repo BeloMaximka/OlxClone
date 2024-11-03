@@ -19,8 +19,10 @@
     "npm:@types/jsonwebtoken@*": "9.0.7",
     "npm:@types/jsonwebtoken@^9.0.7": "9.0.7",
     "npm:@types/node@*": "22.5.4",
+    "npm:@types/nodemailer@^6.4.16": "6.4.16",
     "npm:jsonwebtoken@^9.0.2": "9.0.2",
     "npm:mysql2@^3.11.3": "3.11.3",
+    "npm:nodemailer@^6.9.16": "6.9.16",
     "npm:path-to-regexp@6.2.1": "6.2.1",
     "npm:sequelize-typescript@^2.1.6": "2.1.6_@types+node@22.5.4_@types+validator@13.12.2_reflect-metadata@0.2.2_sequelize@6.37.5",
     "npm:sequelize@^6.37.5": "6.37.5"
@@ -111,6 +113,12 @@
       "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
       "dependencies": [
         "undici-types"
+      ]
+    },
+    "@types/nodemailer@6.4.16": {
+      "integrity": "sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==",
+      "dependencies": [
+        "@types/node"
       ]
     },
     "@types/validator@13.12.2": {
@@ -296,6 +304,9 @@
         "lru-cache"
       ]
     },
+    "nodemailer@6.9.16": {
+      "integrity": "sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ=="
+    },
     "once@1.4.0": {
       "integrity": "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==",
       "dependencies": [
@@ -401,8 +412,10 @@
       "jsr:@std/assert@1",
       "jsr:@std/dotenv@~0.225.2",
       "npm:@types/jsonwebtoken@^9.0.7",
+      "npm:@types/nodemailer@^6.4.16",
       "npm:jsonwebtoken@^9.0.2",
       "npm:mysql2@^3.11.3",
+      "npm:nodemailer@^6.9.16",
       "npm:sequelize-typescript@^2.1.6",
       "npm:sequelize@^6.37.5"
     ]

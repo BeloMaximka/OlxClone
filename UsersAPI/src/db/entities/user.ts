@@ -52,6 +52,11 @@ export class User extends Model {
   })
   declare password: string;
 
+  @Column({
+    type: DataType.DATE,
+  })
+  declare passwordUpdatedAt?: Date;
+
   @BelongsToMany(() => Role, () => UserRole)
   declare roles: Role[];
 }

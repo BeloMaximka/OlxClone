@@ -8,7 +8,7 @@ const app = new Application();
 app.use(rootRouter.routes());
 app.use(rootRouter.allowedMethods());
 
-await sequelize.sync();
+await sequelize.sync({ alter: true });
 
 console.log(
   `Server is listening at https://localhost:${environmentVariables.port}`
