@@ -11,7 +11,7 @@ interface RegisterRequest {
   password: string;
 }
 
-export async function registerUser(ctx: Context) {
+export async function register(ctx: Context) {
   const body = (await ctx.request.body.json()) as RegisterRequest;
   ctx.assert(body.name, 400, "Name is required");
   ctx.assert(body.email, 400, "Email is required");

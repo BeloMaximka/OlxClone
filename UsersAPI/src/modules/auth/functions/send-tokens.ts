@@ -3,8 +3,7 @@ import jwt from "jsonwebtoken";
 import { environmentVariables } from "../../../config/environment-variables.ts";
 import type { UserPayload } from "../models/user-payload.ts";
 
-export function sendTokens(ctx: Context) {
-  const user = ctx.state["user"] as UserPayload;
+export function sendTokens(ctx: Context, user: UserPayload) {
   const oneMonthExpiration = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
   const refreshToken = jwt.sign(
     { email: user.email, exp: oneMonthExpiration },

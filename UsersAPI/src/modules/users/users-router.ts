@@ -1,8 +1,8 @@
 import { Router } from "@oak/oak/router";
-import { registerUser } from "./middlewares/register-user.ts";
+import { register } from "./controllers/register.ts";
 
 const usersRouter = new Router();
 
-usersRouter.post("/", registerUser);
+usersRouter.post("/", register);
 
 export { usersRouter };
