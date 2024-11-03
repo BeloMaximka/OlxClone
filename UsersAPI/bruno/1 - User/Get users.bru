@@ -1,0 +1,36 @@
+meta {
+  name: Get users
+  type: http
+  seq: 6
+}
+
+get {
+  url: https://localhost:4002/api/users
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
+}
+
+tests {
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response has correct data", function () {
+      const jsonData = res.getBody();
+      expect(jsonData[0].id).to.eql(1);
+      expect(jsonData[0].name).to.eql("admin");
+      expect(jsonData[0].email).to.eql("admin@gmail.com");
+      expect(jsonData[0].isEmailConfirmed).to.eql(false);
+      expect(jsonData[0].isActive).to.eql(true);
+      expect(jsonData[0].avatarUrl).to.eql(null);
+      expect(jsonData[0].registrationDate).to.exist;
+  
+      expect(jsonData[1].id).to.exist
+      bru.setEnvVar("newUserId", jsonData[1].id);
+  });
+}

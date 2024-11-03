@@ -1,0 +1,31 @@
+meta {
+  name: Get roles
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://localhost:4002/api/roles
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
+}
+
+tests {
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response has correct data", function () {
+      const jsonData = res.getBody();
+      expect(jsonData[0].name).to.eql("admin");
+      expect(jsonData[0].displayName).to.eql("Administrator");
+  
+      expect(jsonData[1].name).to.eql("user");
+      expect(jsonData[1].displayName).to.eql("User");
+  });
+}

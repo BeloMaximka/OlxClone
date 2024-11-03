@@ -1,0 +1,30 @@
+meta {
+  name: Register existing user
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://localhost:4002/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "name": "Petro",
+      "email": "{{uniqueEmail}}",
+      "password": "1Password!"
+  }
+}
+
+tests {
+  test("Status code is 400", function () {
+      expect(res.getStatus()).to.equal(400);
+  });
+  test("Response has correct data", function () {
+      const text = res.getBody()?.toString();
+      const uniqueEmail = bru.getEnvVar("uniqueEmail");
+      expect(text).to.eq(`User with email '${uniqueEmail}' already exists.`);
+  });
+}

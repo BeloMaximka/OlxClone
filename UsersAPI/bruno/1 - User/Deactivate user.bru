@@ -1,0 +1,22 @@
+meta {
+  name: Deactivate user
+  type: http
+  seq: 7
+}
+
+delete {
+  url: https://localhost:4002/api/users/{{newUserId}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
+}
+
+tests {
+  test("Status code is 204", function () {
+      expect(res.getStatus()).to.equal(204);
+  });
+}
