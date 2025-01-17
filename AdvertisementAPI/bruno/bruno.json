@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "OlxCloneUsers",
+  "name": "OlxClone",
   "type": "collection",
   "ignore": [
     "node_modules",

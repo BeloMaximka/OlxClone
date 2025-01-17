@@ -1,0 +1,36 @@
+meta {
+  name: Get token (admin role)
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://localhost:4002/api/auth
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email": "admin@gmail.com",
+      "password": "1Password!"
+  }
+}
+
+tests {
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  test("Response has correct data", function () {
+      const jsonData = res.getBody();
+      expect(jsonData.token).to.exist;
+      bru.setEnvVar("authToken", jsonData.token)
+      
+  });
+  
+  test("Set refresh_token cookie", function () {
+      const setCookieHeader = res.getHeader("set-cookie");
+      const regex = /refresh_token=.+; path=\/api\/auth\/token; expires=.+; samesite=strict; secure; httponly/;
+      expect(setCookieHeader).to.match(regex);
+  });
+}

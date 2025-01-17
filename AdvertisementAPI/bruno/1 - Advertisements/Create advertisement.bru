@@ -1,0 +1,20 @@
+meta {
+  name: Create advertisement
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:4003/api/ads
+  body: none
+  auth: none
+}
+
+headers {
+  : 
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
+}
