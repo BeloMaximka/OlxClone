@@ -21,8 +21,9 @@ export class CategoriesService {
     return this.categoriesRepository.save(category);
   }
 
-  async findAll(): Promise<Category[]> {
-    return this.categoriesRepository.find();
+  async findAll(sectionId: number): Promise<Category[]> {
+    await this.#validateSectionId(sectionId);
+    return this.categoriesRepository.find({ where: { sectionId } });
   }
 
   async findOne(id: number): Promise<Category> {
@@ -43,7 +44,7 @@ export class CategoriesService {
     if (!category) {
       throw new NotFoundException(`Category with ID ${id} not found.`);
     }
-    
+
     await this.categoriesRepository.delete(id);
   }
 

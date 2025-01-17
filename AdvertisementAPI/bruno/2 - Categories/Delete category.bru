@@ -5,7 +5,12 @@ meta {
 }
 
 delete {
-  url: 
+  url: http://localhost:4003/api/categories/2
   body: none
   auth: none
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
 }

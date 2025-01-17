@@ -4,10 +4,10 @@ import {
   Post,
   Body,
   Param,
-  Patch,
   Delete,
   UseGuards,
   Request,
+  Put,
 } from '@nestjs/common';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -32,17 +32,12 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.categoriesService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   update(
