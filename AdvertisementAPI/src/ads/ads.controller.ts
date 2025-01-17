@@ -4,10 +4,10 @@ import {
   Post,
   Body,
   Param,
-  Patch,
   Delete,
   UseGuards,
   Request,
+  Put,
 } from '@nestjs/common';
 import { AdsService } from './ads.service';
 import { CreateAdDto } from './dto/create-ad.dto';
@@ -39,7 +39,7 @@ export class AdsController {
     return this.adsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @Roles('user', 'admin')
   @UseGuards(RolesGuard, OwnershipGuard)
   update(
