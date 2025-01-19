@@ -8,6 +8,7 @@ import {
   UseGuards,
   Request,
   Put,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -15,11 +16,13 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { AdsService } from 'src/ads/ads.service';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(
     private readonly categoriesService: CategoriesService,
+    private readonly adsService: AdsService,
   ) {}
 
   @Post()
@@ -35,6 +38,11 @@ export class CategoriesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
+  }
+
+  @Get(':id/ads')
+  findAllAds(@Param('id', ParseIntPipe) categoryId: number) {
+    return this.adsService.findAll(categoryId);
   }
 
   @Put(':id')

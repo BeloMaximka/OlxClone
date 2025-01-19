@@ -6,10 +6,12 @@ import { Category } from './entities/category.entity';
 import { JwtService } from '@nestjs/jwt';
 import { SectionsService } from 'src/sections/sections.service';
 import { Section } from 'src/sections/entities/section.entity';
+import { AdsService } from 'src/ads/ads.service';
+import { Ad } from 'src/ads/entities/ad.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category, Section])],
+  imports: [TypeOrmModule.forFeature([Category, Section, Ad])],
   controllers: [CategoriesController],
-  providers: [CategoriesService, SectionsService, JwtService],
+  providers: [CategoriesService, SectionsService, AdsService, JwtService],
 })
 export class CategoriesModule {}

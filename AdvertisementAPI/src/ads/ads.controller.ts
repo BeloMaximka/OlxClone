@@ -82,11 +82,6 @@ export class AdsController {
     );
   }
 
-  @Get()
-  findAll() {
-    return this.adsService.findAll();
-  }
-
   @Get(':id')
   async findOne(@Param('id') id: string, @Headers() headers) {
     const ad = await this.adsService.findOne(+id);

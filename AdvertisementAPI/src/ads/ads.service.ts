@@ -17,8 +17,8 @@ export class AdsService {
     return this.adsRepository.save(ad);
   }
 
-  async findAll(): Promise<Ad[]> {
-    return this.adsRepository.find();
+  async findAll(categoryId: number): Promise<Ad[]> {
+    return this.adsRepository.find({ where: { categoryId } });
   }
 
   async findOne(id: number): Promise<Ad> {
