@@ -6,12 +6,31 @@ meta {
 
 post {
   url: http://localhost:4003/api/ads
-  body: none
+  body: json
   auth: none
 }
 
 headers {
   : 
+}
+
+body:json {
+  {
+    "categoryId": 3,
+    "title": "New ad",
+    "description": "Ad desc",
+    "slug": "new-ad",
+    "price": 122
+  }
+}
+
+body:multipart-form {
+  images: @file(D:\cat.jpg)
+  categoryId: 5
+  title: "New ad"
+  slug: "new-ad"
+  description: "Ad desc"
+  price: 4
 }
 
 script:pre-request {

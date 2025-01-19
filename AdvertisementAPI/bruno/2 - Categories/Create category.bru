@@ -5,7 +5,20 @@ meta {
 }
 
 post {
-  url: http://localhost:4003/api/ads
-  body: none
+  url: http://localhost:4003/api/categories
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "sectionId": 2,
+    "name": "New Category",
+    "slug": "new-category"
+  }
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
 }

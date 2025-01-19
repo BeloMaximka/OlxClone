@@ -4,22 +4,15 @@ import { Repository } from 'typeorm';
 import { Ad } from './entities/ad.entity';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { UpdateAdDto } from './dto/update-ad.dto';
-import { ConfigUtil } from 'src/common/utils/config.util';
 
 @Injectable()
 export class AdsService {
   constructor(
     @InjectRepository(Ad)
     private readonly adsRepository: Repository<Ad>,
-    private readonly configUtil: ConfigUtil,
   ) {}
 
   async create(createAdDto: CreateAdDto & { authorId: number }): Promise<Ad> {
-    const maxImages = this.configUtil.getMaxImagesPerAd();
-    if (createAdDto.images.length > maxImages) {
-      throw new Error(`Maximum ${maxImages} images are allowed per ad.`);
-    }
-
     const ad = this.adsRepository.create(createAdDto);
     return this.adsRepository.save(ad);
   }
@@ -29,7 +22,7 @@ export class AdsService {
   }
 
   async findOne(id: number): Promise<Ad> {
-    return this.adsRepository.findOneBy({ id });
+    return this.adsRepository.findOne({ where: { id }, relations: ['images'] });
   }
 
   async update(id: number, updateAdDto: UpdateAdDto): Promise<Ad> {
