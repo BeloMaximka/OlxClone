@@ -8,9 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import { AdImage } from './entities/ad-image.entity';
 import { AdImagesService } from './ad-images.service';
 import { ImagesService } from 'src/images/images.service';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { NumericTag } from 'src/tags/entities/numeric-tag.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ad, AdImage])],
+  imports: [TypeOrmModule.forFeature([Ad, AdImage, Tag, NumericTag])],
   controllers: [AdsController],
   providers: [
     AdsService,

@@ -7,6 +7,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { AdImage } from './ad-image.entity';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { NumericTag } from 'src/tags/entities/numeric-tag.entity';
 
 @Entity('advertisements')
 export class Ad {
@@ -42,4 +44,10 @@ export class Ad {
 
   @OneToMany(() => AdImage, (image) => image.ad)
   images: AdImage[];
+
+  @OneToMany(() => Tag, (tag) => tag.ad)
+  tags: Tag[];
+
+  @OneToMany(() => NumericTag, (numericTag) => numericTag.ad)
+  numericTags: NumericTag[];
 }
