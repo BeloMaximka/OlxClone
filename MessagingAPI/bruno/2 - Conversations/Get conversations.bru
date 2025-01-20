@@ -1,0 +1,16 @@
+meta {
+  name: Get conversations
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:4004/conversations
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
+}
