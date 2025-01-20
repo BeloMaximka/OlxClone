@@ -1,8 +1,9 @@
 import express from "express";
 import { z, ZodError } from "zod";
 import db from "../database";
-import { authenticateJWT, authorizeRoles, Roles } from "../middleware/auth";
+import { authenticateJWT, authorizeRoles } from "../middleware/auth";
 import { RowDataPacket } from "mysql2";
+import { Roles } from "models/roles.enum";
 
 const router = express.Router();
 
@@ -54,6 +55,31 @@ router.get(
     }
   }
 );
+
+router.get(
+    "/:id/messages",
+    authenticateJWT,
+    authorizeRoles([Roles.Admin, Roles.User]),
+    async (req, res) => {
+      try {
+        const { id } = idSchema.parse(req.params);
+        const [rows] = await db.execute<RowDataPacket[]>(
+          "SELECT * FROM Messages WHERE ConversationId = ?",
+          [Number(id)]
+        );
+  
+        if (rows.length === 0) {
+          res.status(404).json({ error: "Conversation not found" });
+        }
+  
+        res.json(rows);
+      } catch (error) {
+        console.error("Error fetching conversation:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  );
+
 
 router.post(
   "/",

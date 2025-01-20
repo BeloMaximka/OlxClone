@@ -4,8 +4,21 @@ meta {
   seq: 2
 }
 
-get {
-  url: 
-  body: none
+post {
+  url: http://localhost:4004/conversations
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "advertisementId": 2,
+    "customerId": 1,
+    "message": "what"
+  }
+}
+
+script:pre-request {
+  const authToken = bru.getEnvVar("authToken");
+  req.setHeader("Authorization", "Bearer " + authToken);
 }

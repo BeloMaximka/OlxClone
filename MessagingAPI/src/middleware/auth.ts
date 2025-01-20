@@ -1,19 +1,11 @@
 import jwt from "jsonwebtoken";
 import express from "express";
+import { DecodedToken } from "models/decoded-token.model";
+import { Roles } from "models/roles.enum";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
   console.error("Missing JWT_SECRENT env variable");
-}
-
-export enum Roles {
-  Admin = "admin",
-  User = "user",
-}
-
-interface DecodedToken {
-  userId: number;
-  roles: Roles[];
 }
 
 export const authenticateJWT = (
@@ -32,8 +24,8 @@ export const authenticateJWT = (
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET as string) as DecodedToken;
-    req.user = decoded; // Attach user information to the request
-    next(); // Proceed to the next middleware
+    req.user = decoded;
+    next();
   } catch (err) {
     res.status(403).json({ error: "Invalid or expired token" });
   }
@@ -53,7 +45,7 @@ export const authorizeRoles = (allowedRoles: Roles[]) => {
         hasSufficientRole = true;
       }
     });
-    
+
     if (!hasSufficientRole) {
       res
         .status(403)
