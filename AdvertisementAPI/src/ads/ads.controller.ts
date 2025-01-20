@@ -12,6 +12,7 @@ import {
   UploadedFiles,
   ParseIntPipe,
   Headers,
+  Inject,
 } from '@nestjs/common';
 import { AdsService } from './ads.service';
 import { CreateAdDto } from './dto/create-ad.dto';
@@ -27,6 +28,9 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { AdImagesService } from './ad-images.service';
 import { extname } from 'path';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Ad } from './entities/ad.entity';
+import { Cache } from 'cache-manager';
 
 const uploadDirectory = './uploads';
 if (!fs.existsSync(uploadDirectory)) {
@@ -41,6 +45,7 @@ export class AdsController {
   constructor(
     private readonly adsService: AdsService,
     private readonly adImagesService: AdImagesService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     configService: ConfigService,
   ) {
     maxImagesPerAd = configService.get<number>('MAX_IMAGES_PER_AD', 0);
@@ -76,19 +81,28 @@ export class AdsController {
     @Param('id', ParseIntPipe) id: number,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.adImagesService.add(
+    const result = this.adImagesService.add(
       id,
       files.map((image) => `${image.filename}${extname(image.originalname)}`),
     );
+    this.cacheManager.del(`ads_${id}`);
+    return result;
+    
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Headers() headers) {
-    const ad = await this.adsService.findOne(+id);
+    let ad = await this.cacheManager.get<Ad>(`ads_${id}`);
+    if(ad) {
+      return ad;
+    }
+
+    ad = await this.adsService.findOne(+id);
     ad.images.forEach(
       (image) =>
         (image.imageUri = `http://${headers.host}/api/images/${image.imageUri}`),
     );
+    this.cacheManager.set(`ads_${id}`, ad);
     return ad;
   }
 

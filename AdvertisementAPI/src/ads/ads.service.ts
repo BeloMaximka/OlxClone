@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Ad } from './entities/ad.entity';
@@ -22,7 +22,14 @@ export class AdsService {
   }
 
   async findOne(id: number): Promise<Ad> {
-    return this.adsRepository.findOne({ where: { id }, relations: ['images'] });
+    const ad = await this.adsRepository.findOne({
+      where: { id },
+      relations: ['images'],
+    });
+    if (!ad) {
+      throw new NotFoundException(`Ad with ID ${id} not found.`);
+    }
+    return ad;
   }
 
   async update(id: number, updateAdDto: UpdateAdDto): Promise<Ad> {

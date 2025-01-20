@@ -10,9 +10,10 @@ import { AdImagesService } from './ad-images.service';
 import { ImagesService } from 'src/images/images.service';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { NumericTag } from 'src/tags/entities/numeric-tag.entity';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ad, AdImage, Tag, NumericTag])],
+  imports: [TypeOrmModule.forFeature([Ad, AdImage, Tag, NumericTag]), CacheModule.register()],
   controllers: [AdsController],
   providers: [
     AdsService,
