@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Ad } from './entities/ad.entity';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { UpdateAdDto } from './dto/update-ad.dto';
+import { SearchAdQueryDto } from './dto/search-ad-query.dto';
+import { PaginatedResult } from 'src/common/dto/paginated-result.dto';
 
 @Injectable()
 export class AdsService {
@@ -17,8 +19,46 @@ export class AdsService {
     return this.adsRepository.save(ad);
   }
 
-  async findAll(categoryId: number): Promise<Ad[]> {
-    return this.adsRepository.find({ where: { categoryId } });
+  async findAll(
+    categoryId: number,
+    searchAdQueryDto: SearchAdQueryDto,
+  ): Promise<PaginatedResult<Ad>> {
+    const skip = (searchAdQueryDto.page - 1) * searchAdQueryDto.limit;
+    const take = searchAdQueryDto.limit;
+
+    const queryBuilder = this.adsRepository
+      .createQueryBuilder('ad')
+      .where('ad.categoryId = :categoryId', { categoryId })
+      .skip(skip)
+      .take(take);
+
+    if (searchAdQueryDto.title) {
+      queryBuilder.andWhere('ad.title LIKE :title', {
+        title: `%${searchAdQueryDto.title}%`,
+      });
+    }
+
+    if (searchAdQueryDto.description) {
+      queryBuilder.andWhere('ad.description LIKE :description', {
+        description: `%${searchAdQueryDto.description}%`,
+      });
+    }
+
+    if (searchAdQueryDto.sortBy && searchAdQueryDto.order) {
+      queryBuilder.orderBy(`ad.${searchAdQueryDto.sortBy}`, searchAdQueryDto.order); 
+    } else {
+      queryBuilder.orderBy('ad.price', 'ASC');
+    }
+
+    const [ads, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data: ads,
+      total,
+      page: searchAdQueryDto.page,
+      limit: searchAdQueryDto.limit,
+      totalPages: Math.ceil(total / searchAdQueryDto.limit),
+    };
   }
 
   async findOne(id: number): Promise<Ad> {

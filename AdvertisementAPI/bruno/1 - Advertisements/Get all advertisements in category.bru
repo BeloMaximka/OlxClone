@@ -5,7 +5,14 @@ meta {
 }
 
 get {
-  url: 
+  url: http://localhost:4003/api/categories/3/ads?description=a&page=1&limit=3
   body: none
   auth: none
+}
+
+params:query {
+  description: a
+  page: 1
+  limit: 3
+  ~title: a
 }

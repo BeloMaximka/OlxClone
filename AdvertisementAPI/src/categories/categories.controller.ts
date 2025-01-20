@@ -9,6 +9,7 @@ import {
   Request,
   Put,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -17,6 +18,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { AdsService } from 'src/ads/ads.service';
+import { SearchAdQueryDto } from 'src/ads/dto/search-ad-query.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -41,8 +43,11 @@ export class CategoriesController {
   }
 
   @Get(':id/ads')
-  findAllAds(@Param('id', ParseIntPipe) categoryId: number) {
-    return this.adsService.findAll(categoryId);
+  findAllAds(
+    @Param('id', ParseIntPipe) categoryId: number,
+    @Query() searchQuery: SearchAdQueryDto,
+  ) {
+    return this.adsService.findAll(categoryId, searchQuery);
   }
 
   @Put(':id')
